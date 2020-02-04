@@ -62,3 +62,34 @@ function generateEmployeeCard(data) {
  // appends cardDiv inside the gallery div
  gallery.appendChild(cardDiv);
 }
+
+
+// creates the modalContainer div--which when clicked, displays more information about the employee
+
+function generateEmployeeModal(data) {
+ const modalContainer = document.createElement('div');
+ modalContainer.setAttribute('class', 'modal-container');
+
+ const modal = `
+  <div class='modal'>
+    <button type='button' id='modal-close-btn' class='modal-close-btn'><strong>X</strong></button>
+    <div class='modal-info-container'>
+        <img class='modal-img' src="${data.picture.large}" alt='profile picture'>
+        <h3 id='name' class='modal-name cap'>${data.name.first} ${data.name.last}</h3>
+        <p class='modal-text'>${data.email}</p>
+        <p class='modal-text cap'>${data.location.city}</p>
+        <hr>
+        <p class='modal-text'>${data.phone}</p>
+        <p class='modal-text'>${data.location.street.number} ${data.location.street.name}., ${data.location.city}, ${data.location.state} ${data.location.postcode}</p>
+        <p class='modal-text'>${data.dob.date}</p>
+    </div>
+  </div>
+  `;
+
+ modalContainer.innerHTML = modal;
+
+ // appends modalContainer div after the gallery div
+ gallery.parentNode.insertBefore(modalContainer, gallery.nextSibling)
+}
+
+// EVENT LISTENERS
