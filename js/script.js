@@ -19,16 +19,16 @@ Promise.all([
  fetchData('https://randomuser.me/api/?nat=us&inc=picture,name,email,location,dob,phone&results=12')
 ])
 
-// takes the data we get back a generates a "userContainer" and a modalContainer
+// takes the data we get back a generates a "employeeContainer" and a modalContainer
 .then(data => {
-   data[0].results.map(profile => generateUserContainer(profile));
-   data[0].results.map(modalProfile => generateModalContainer(modalProfile));
+   data[0].results.map(profile => generateEmployeeCard(profile));
+   data[0].results.map(modalProfile => generateEmployeeModal(modalProfile));
 
-  // const userProfile = data[0].results.map(profile => generateUserContainer() );
-  // const modal = data[0].results.map(modalProfile => generateModalContainer() );
+  // const employeeProfile = data[0].results.map(profile => generateEmployeeCard() );
+  // const modal = data[0].results.map(modalProfile => generateEmployeeModal() );
 
-  generateUserContainer(userProfile);
-  generateModalContainer(modal);
+  generateEmployeeCard(employeeProfile);
+  generateEmployeeModal(modal);
 })
 
 // HELPER FUNCTIONS
@@ -40,4 +40,25 @@ function checkStatus(response) {
   } else {
     return Promise.reject( new Error(response.statusText) );
   }
+}
+
+// creates the cardDiv--which holds each employee's basic information
+function generateEmployeeCard(data) {
+ const cardDiv = document.createElement('div');
+ cardDiv.setAttribute('class', 'card');
+
+ const employeeContainer = `
+    <div class='card-img-container'>
+     <img class='card-img' src='${data.picture.large}' alt='profile picture'>
+    </div>
+    <div class='card-info-container'>
+      <h3 id='name' class='card-name cap'>${data.name.first} ${data.name.last}</h3>
+      <p class='card-text'>${data.email}</p>
+      <p class='card-text cap'>${data.location.city}, ${data.location.state}</p>
+    </div>
+ `;
+ cardDiv.innerHTML = employeeContainer;
+
+ // appends cardDiv inside the gallery div
+ gallery.appendChild(cardDiv);
 }
