@@ -11,3 +11,10 @@ function fetchData(url) {
     .then( res => res.json() )
     .catch( error => console.log('Houston, we have a problem!', error) )
 }
+
+// promise.all is used when you have 2 or more api's to fetch ... wanted to use anyway
+Promise.all([
+
+  // returns 12 users with US nationality, picture, name, email, location, dob & phone
+ fetchData('https://randomuser.me/api/?nat=us&inc=picture,name,email,location,dob,phone&results=12')
+])
