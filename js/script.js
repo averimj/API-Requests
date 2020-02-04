@@ -18,3 +18,15 @@ Promise.all([
   // returns 12 users with US nationality, picture, name, email, location, dob & phone
  fetchData('https://randomuser.me/api/?nat=us&inc=picture,name,email,location,dob,phone&results=12')
 ])
+
+// takes the data we get back a generates a "userContainer" and a modalContainer
+.then(data => {
+   data[0].results.map(profile => generateUserContainer(profile));
+   data[0].results.map(modalProfile => generateModalContainer(modalProfile));
+
+  // const userProfile = data[0].results.map(profile => generateUserContainer() );
+  // const modal = data[0].results.map(modalProfile => generateModalContainer() );
+
+  generateUserContainer(userProfile);
+  generateModalContainer(modal);
+})
