@@ -30,3 +30,14 @@ Promise.all([
   generateUserContainer(userProfile);
   generateModalContainer(modal);
 })
+
+// HELPER FUNCTIONS
+
+// ensures the response we get back is 200, if not gives us an error
+function checkStatus(response) {
+  if (response.ok) {
+    return Promise.resolve(response);
+  } else {
+    return Promise.reject( new Error(response.statusText) );
+  }
+}
