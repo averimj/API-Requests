@@ -1,5 +1,5 @@
 
-const search = document.getElementsByClassName('div search-container');
+const search = document.getElementsByClassName('search-container');
 const gallery = document.getElementById('gallery');
 
 // creates the card-div
