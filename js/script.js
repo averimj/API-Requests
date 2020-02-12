@@ -1,7 +1,12 @@
 const search = document.querySelector('.search-container');
 const gallery = document.getElementById('gallery');
-const body = document.getElementsByTagName('body');
+const body = document.querySelector('body');
 
+const modalDiv = document.createElement('div');
+modalDiv.className = 'modal-container';
+
+const cardDiv = document.createElement('div');
+cardDiv.className = 'card';
 
 
 //*FETCH FUNCTIONS*//
@@ -38,6 +43,23 @@ fetchData('https://randomuser.me/api/?nat=us&inc=picture,name,email,location,dob
 })
 
 
+// formats dob in mm/dd/yyyy
+function formatBirthday(employeeData) {
+  const regex = /(\d{4})-(\d{2})-(\d{2}).*/;
+  const replacement = '$2/$3/$1';
+  return employeeData.dob.date.replace(regex, replacement);
+}
+
+
+
+// function getFormattedDate(date) {
+//     let year = date.getFullYear();
+//     let month = (1 + date.getMonth()).toString().padStart(2, '0');
+//     let day = date.getDate().toString().padStart(2, '0');
+//
+//     return month + '/' + day + '/' + year;
+// }
+
  // creates the search box
  function generateForm() {
    const form = `
@@ -52,7 +74,7 @@ fetchData('https://randomuser.me/api/?nat=us&inc=picture,name,email,location,dob
 
  //*creates the card with basic employee information*//
  function generateCardContainer(data) {
-   const cardContainer = data.map(employee => {
+   const cardContainer = data.map((employee, index) => {
      return `
        <div class='card'>
          <div class='card-img-container'>
@@ -64,17 +86,31 @@ fetchData('https://randomuser.me/api/?nat=us&inc=picture,name,email,location,dob
            <p class='card-text cap'>${employee.location.city}, ${employee.location.state}</p>
          </div>
        </div>
-     `;
-   }).join('');
-   gallery.innerHTML = cardContainer;
+  `;
+
+
+ // *EVENT LISTENER --to open the modal DOESN'T WORK *//
+ gallery.addEventListener('click', (e) => {
+   let employeeCard = e.target;
+   let cards = document.getElementsByClassName('cards')
+   // if(employeeCard.className === 'card') {
+     for (let i = 0; i < cards.length; i++){
+       let oneCard = cards[i];
+       if(oneCard === employeeCard) {
+         generateModalContainer(employeeCard);
+       }
+     }
+  });
+
+
+  }).join('');
+  gallery.innerHTML = cardContainer;
  }
 
 
-//*creates the modal with all employee information*//
 function generateModalContainer(data) {
   const modalContainer = data.map(employee => {
   return `
-    <div class='modal-container'>
       <div class='modal'>
         <button type='button' id='modal-close-btn' class='modal-close-btn'><strong>X</strong></button>
         <div class='modal-info-container'>
@@ -85,38 +121,22 @@ function generateModalContainer(data) {
           <hr>
           <p class='modal-text'>${employee.phone}</p>
           <p class='modal-text'>${employee.location.street.number} ${employee.location.street.name}., ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
-          <p class='modal-text'>Birthday:${employee.dob.date.slice(0,10).split("-").reverse().join("/")}</p>
+          <p class='modal-text'>Birthday:${formatBirthday(employee)}</p>
         </div>
       </div>
-    </div>
   `;
 
-
-  //*EVENT LISTENER -- to close the modal  DOESN'T WORK *//
-  let modalContainerDiv = document.querySelectorAll('.modal-container');
-  let closeButton = document.querySelectorAll('.modal-close-btn');
+  // //*EVENT LISTENER -- to close the modal  DOESN'T WORK *//
+  const modalContainerDiv = document.querySelectorAll('.modal-container');
+  const closeButton = document.querySelector('.modal-close-btn');
 
   closeButton.addEventListener('click', () => {
-    modalContainerDiv.style.display = 'none'
+   modalContainerDiv.style.display = 'none'
   });
 
 
-  // ends the generateModalContainer function
   }).join('');
-  document.querySelectorAll('.modal-container').style.display = 'none';
-  document.body.innerHTML = modalContainer;
+  modalDiv.innerHTML = modalContainer;
+  body.append(modalDiv)
+  modalDiv.style.display = 'none';
 }
-
-
-//*EVENT LISTENER --to open the modal DOESN'T WORK *//
-gallery.addEventListener('click', (e) => {
-  let employeeCard = e.target;
-  let cards = document.querySelectorAll('card');
-
-  for (let i = 0; i < cards.length; i++){
-    let oneCard = cards[i];
-     if(oneCard === employeeCard) {
-        generateModalContainer(employeeCard);
-     }
-   }
- });
