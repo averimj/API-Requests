@@ -1,2 +1,2 @@
 # API-Requests
-In this project I build an app directory for a fictional start-up company. I gathered data from a JSON API to display basic contact information for 12 employee's. When the user clicks on any one of the employee's, a moduel will appear displaying more information about the employee. 
+In this project I gathered data from a JSON API and used it to build an app directory for a fictional start-up company. The app will display basic contact information for 12 employee's. The contact information includes a picture, name, email and city and state of the employee. When the user clicks on a specific employee, a moduel will appear displaying more information about the employee such as birthday, address and phone number. 
