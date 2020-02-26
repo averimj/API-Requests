@@ -1,12 +1,8 @@
 const search = document.querySelector('.search-container');
 const gallery = document.getElementById('gallery');
 const body = document.querySelector('body');
-
 const modalDiv = document.createElement('div');
 modalDiv.className = 'modal-container';
-
-const cardDiv = document.createElement('div');
-cardDiv.className = 'card';
 
 
 //*FETCH FUNCTIONS*//
@@ -18,6 +14,7 @@ function fetchData(url) {
     .then( res => res.json() )
     .catch( error => console.log('Houston, we have a problem!', error) )
 }
+
 
 // ensures the response is 200, if not returns an error
 function checkStatus(response) {
@@ -32,12 +29,11 @@ function checkStatus(response) {
 // returns 12 users with US nationality, picture, name, email, location, dob & phone
 fetchData('https://randomuser.me/api/?nat=us&inc=picture,name,email,location,dob,phone&results=12')
 
-
 // returns the promise
 .then(data => {
   const employeeData = data.results;
 
-  generateForm();
+  generateSeachForm();
   generateCardContainer(employeeData);
   generateModalContainer(employeeData);
 })
@@ -51,57 +47,79 @@ function formatBirthday(employeeData) {
 }
 
 
- // creates the search box
- function generateForm() {
-   const form = `
+// creates the search box
+function generateSeachForm() {
+  const form = `
    <form action='#' method='get'>
    <input type='search' id='search-input' class='search-input' placeholder='Search...'>
    <input type='submit' value='&#x1F50D;' id='search-submit' class='search-submit'>
    </form>
    `;
    search.innerHTML = form;
- }
+}
 
 
- //*creates the card with basic employee information*//
- function generateCardContainer(data) {
-   const cardContainer = data.map((employee, index) => {
-     return `
-       <div class='card'>
-         <div class='card-img-container'>
-           <img class='card-img' src='${employee.picture.large}' alt='profile picture'>
-         </div>
-         <div class='card-info-container'>
-           <h3 id='name' class='card-name cap'>${employee.name.first} ${employee.name.last}</h3>
-           <p class='card-text'>${employee.email}</p>
-           <p class='card-text cap'>${employee.location.city}, ${employee.location.state}</p>
-         </div>
+//*creates the card with basic employee information*//
+function generateCardContainer(data) {
+ const cardContainer = data.map( (employee, index) =>
+   `
+    <div class='card'>
+       <div class='card-img-container'>
+         <img class='card-img' src='${employee.picture.large}' alt='profile picture'>
        </div>
-  `;
+       <div class='card-info-container'>
+         <h3 id='name' class='card-name cap'>${employee.name.first} ${employee.name.last}</h3>
+         <p class='card-text'>${employee.email}</p>
+         <p class='card-text cap'>${employee.location.city}, ${employee.location.state}</p>
+       </div>
+     </div>
+    `
+  ).join('');
+
+  gallery.innerHTML = cardContainer;
 
 
- // *EVENT LISTENER --to open the modal DOESN'T WORK *//
- gallery.addEventListener('click', (e) => {
-   let employeeCard = e.target;
-   let cards = document.getElementsByClassName('cards')
-   // if(employeeCard.className === 'card') {
-     for (let i = 0; i < cards.length; i++){
-       let oneCard = cards[i];
-       if(oneCard === employeeCard) {
-         generateModalContainer(employeeCard);
-       }
-     }
+  // *EVENT LISTENER #1 --to open the modal DOESN'T WORK *//
+  gallery.addEventListener('click', (e) => {
+  let employeeCard = e.target.parentElement;
+  let indexOfTarget = Array.prototype.indexOf.call(employeeCard.children, e.target);
+
+  //converting the card nodelist into an array
+    const cardNodeList = document.querySelectorAll('.card');
+    const cardArray = Array.from(cardNodeList);
+
+    for (let i = 0; i < cardArray.length; i++){
+      let card = cardArray[i]
+      let indexOfCard = cardArray.indexOf(card);
+
+      if(indexOfCard === indexOfTarget) {
+        generateModalContainer(indexOfTarget);
+        // modalDiv.style.display = 'block';
+      }
+    }
   });
 
 
-  }).join('');
-  gallery.innerHTML = cardContainer;
- }
+   // *EVENT LISTENER #2 --to open the modal DOESN'T WORK *//
+  // const cardNodeList = document.querySelectorAll('.card');
+  // const cardArray = Array.from(cardNodeList);
+  //
+  // // adds an event listener on each card
+  // cardArray.forEach((card) => {
+  //   card.addEventListener('click', cardIndex)
+  // })
+  //
+  // // helper function to get index of card being clicked
+  // function cardIndex(e, index){
+  //   let indexOfCard = Array.from(cardArray).indexOf(e.target)
+  // }
+
+}
 
 
 function generateModalContainer(data) {
-  const modalContainer = data.map(employee => {
-  return `
+  const modalContainer = data.map(employee =>
+  `
       <div class='modal'>
         <button type='button' id='modal-close-btn' class='modal-close-btn'><strong>X</strong></button>
         <div class='modal-info-container'>
@@ -115,19 +133,14 @@ function generateModalContainer(data) {
           <p class='modal-text'>Birthday:${formatBirthday(employee)}</p>
         </div>
       </div>
-  `;
+  `).join('');
 
-  // //*EVENT LISTENER -- to close the modal  DOESN'T WORK *//
-  const modalContainerDiv = document.querySelectorAll('.modal-container');
-  const closeButton = document.querySelector('.modal-close-btn');
-
-  closeButton.addEventListener('click', () => {
-   modalContainerDiv.style.display = 'none'
-  });
-
-
-  }).join('');
   modalDiv.innerHTML = modalContainer;
   body.append(modalDiv)
-  modalDiv.style.display = 'none';
+  modalDiv.style.display = 'block';
+
+  // //*EVENT LISTENER -- to close the modal *//
+  document.querySelector('.modal-close-btn').addEventListener('click', () => {
+    modalDiv.style.display = 'none';
+  });
 }
