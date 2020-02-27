@@ -111,21 +111,21 @@ function generateModalContainer(data) {
 
 // *EVENT LISTENER #1 --to open the modal DOESN'T WORK *//
 gallery.addEventListener('click', (e) => {
-let employeeCard = e.target
-console.log(employeeCard);
+  let employeeCard = e.target
+  console.log(employeeCard);
 
-//converting the card nodelist into an array
-const cardNodeList = document.querySelectorAll('.card');
-const cardArray = Array.from(cardNodeList);
+  //converting the card nodelist into an array
+  const cardNodeList = document.querySelectorAll('.card');
+  const cardArray = Array.from(cardNodeList);
 
-for (let i = 0; i < cardArray.length; i++){
-  let card = cardArray[i]
-  let indexOfCard = cardArray.indexOf(card);
+  for (let i = 0; i < cardArray.length; i++){
+    let card = cardArray[i]
+    let indexOfCard = cardArray.indexOf(card);
 
-  if(employeeCard.id === card.id){
-    console.log(employeeCard.id);
-    console.log(card.id);
-    modalDiv.style.display = 'block';
-  };
-}
+    if(employeeCard.id === card.id){
+      console.log(employeeCard.id);
+      console.log(card.id);
+      modalDiv.style.display = 'block';
+    };
+  }
 });
