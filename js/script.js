@@ -60,7 +60,7 @@ function generateSeachForm() {
 }
 
 
-// //*creates the card with basic employee information*//
+//*creates the card with basic employee information*//
 function generateCardContainer(data) {
  const cardContainer = data.map( (employee, index) =>
    `
@@ -98,7 +98,6 @@ function generateModalContainer(data) {
       </div>
   `).join('');
 
-  // modalDiv.setAttribute(`'id', 'modalNumber${index}'`);
   modalDiv.innerHTML = modalContainer;
   body.append(modalDiv)
   modalDiv.style.display = 'none';
@@ -109,7 +108,8 @@ function generateModalContainer(data) {
   });
 }
 
-// *EVENT LISTENER #1 --to open the modal DOESN'T WORK *//
+
+// *EVENT LISTENER --to open the modal DOESN'T WORK *//
 gallery.addEventListener('click', (e) => {
   let employeeCard = e.target
   console.log(employeeCard);
@@ -120,7 +120,6 @@ gallery.addEventListener('click', (e) => {
 
   for (let i = 0; i < cardArray.length; i++){
     let card = cardArray[i]
-    let indexOfCard = cardArray.indexOf(card);
 
     if(employeeCard.id === card.id){
       console.log(employeeCard.id);
