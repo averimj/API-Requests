@@ -83,10 +83,9 @@ function generateCardContainer(data) {
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
     card.addEventListener('click', () => {
-
       // ** code below doesn't work but thats my way of thinking **
       // if(cardNumber.id === modalNumber.id){
-      //   modalDiv.style.display = 'block';
+        modalDiv.style.display = 'block';
       // }
     });
   })
