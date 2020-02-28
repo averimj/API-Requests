@@ -64,7 +64,7 @@ function generateSeachForm() {
 function generateCardContainer(data) {
  const cardContainer = data.map( (employee, index) =>
    `
-    <div id='modalNumber${index}' class='card'>
+    <div 'id=cardNumber${index}' class='card'>
        <div class='card-img-container'>
          <img class='card-img' src='${employee.picture.large}' alt='profile picture'>
        </div>
@@ -76,7 +76,21 @@ function generateCardContainer(data) {
      </div>
     `
   ).join('');
+
   gallery.innerHTML = cardContainer;
+
+  // EVENT LISTENER -- DOESN'T WORK YET (WIP)
+  const cards = document.querySelectorAll('.card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+
+      // ** code below doesn't work but thats my way of thinking **
+      // if(cardNumber.id === modalNumber.id){
+      //   modalDiv.style.display = 'block';
+      // }
+    });
+  })
+
 }
 
 
@@ -107,24 +121,3 @@ function generateModalContainer(data) {
     modalDiv.style.display = 'none';
   });
 }
-
-
-// *EVENT LISTENER --to open the modal DOESN'T WORK *//
-gallery.addEventListener('click', (e) => {
-  let employeeCard = e.target
-  console.log(employeeCard);
-
-  //converting the card nodelist into an array
-  const cardNodeList = document.querySelectorAll('.card');
-  const cardArray = Array.from(cardNodeList);
-
-  for (let i = 0; i < cardArray.length; i++){
-    let card = cardArray[i]
-
-    if(employeeCard.id === card.id){
-      console.log(employeeCard.id);
-      console.log(card.id);
-      modalDiv.style.display = 'block';
-    };
-  }
-});
