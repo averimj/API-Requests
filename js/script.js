@@ -64,7 +64,7 @@ function generateSeachForm() {
 function generateCardContainer(data) {
  const cardContainer = data.map( (employee, index) =>
    `
-    <div 'id=cardNumber${index}' class='card'>
+    <div id=${index}  class='card'>
        <div class='card-img-container'>
          <img class='card-img' src='${employee.picture.large}' alt='profile picture'>
        </div>
@@ -76,17 +76,14 @@ function generateCardContainer(data) {
      </div>
     `
   ).join('');
-
   gallery.innerHTML = cardContainer;
 
-  // EVENT LISTENER -- DOESN'T WORK YET (WIP)
+  // EVENT LISTENER -- to open modals
   const cards = document.querySelectorAll('.card');
   cards.forEach(card => {
     card.addEventListener('click', () => {
-      // ** code below doesn't work but thats my way of thinking **
-      // if(cardNumber.id === modalNumber.id){
-        modalDiv.style.display = 'block';
-      // }
+      document.getElementById('modalNumber'+card.id).style.display = 'block';
+      modalDiv.style.display = 'block';
     });
   })
 
@@ -96,27 +93,31 @@ function generateCardContainer(data) {
 function generateModalContainer(data) {
   const modalContainer = data.map( (employee, index) =>
   `
-      <div 'id=modalNumber${index}' class='modal'>
-        <button type='button' id='modal-close-btn' class='modal-close-btn'><strong>X</strong></button>
-        <div class='modal-info-container'>
-          <img class='modal-img' src='${employee.picture.large}' alt='profile picture'>
-          <h3 id='name' class='modal-name cap'>${employee.name.first} ${employee.name.last}</h3>
-          <p class='modal-text'>${employee.email}</p>
-          <p class='modal-text cap'>${employee.location.city}</p>
-          <hr>
-          <p class='modal-text'>${employee.phone}</p>
-          <p class='modal-text'>${employee.location.street.number} ${employee.location.street.name}., ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
-          <p class='modal-text'>Birthday:${formatBirthday(employee)}</p>
-        </div>
+    <div id='modalNumber${index}' class='modal' style=display:none;>
+      <button type='button' id='modal-close-btn' class='modal-close-btn'><strong>X</strong></button>
+      <div class='modal-info-container'>
+        <img class='modal-img' src='${employee.picture.large}' alt='profile picture'>
+        <h3 id='name' class='modal-name cap'>${employee.name.first} ${employee.name.last}</h3>
+        <p class='modal-text'>${employee.email}</p>
+        <p class='modal-text cap'>${employee.location.city}</p>
+        <hr>
+        <p class='modal-text'>${employee.phone}</p>
+        <p class='modal-text'>${employee.location.street.number} ${employee.location.street.name}., ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
+        <p class='modal-text'>Birthday:${formatBirthday(employee)}</p>
       </div>
+    </div>
   `).join('');
 
   modalDiv.innerHTML = modalContainer;
   body.append(modalDiv)
   modalDiv.style.display = 'none';
 
-  // //*EVENT LISTENER -- to close the modal *//
-  document.querySelector('.modal-close-btn').addEventListener('click', () => {
-    modalDiv.style.display = 'none';
-  });
+ //*EVENT LISTENER -- to close the modal *//
+  const modals = document.querySelectorAll('.modal-close-btn');
+  modals.forEach(modal => {
+    modal.addEventListener('click', () => {
+      modal.parentElement.style.display = 'none';
+      modalDiv.style.display = 'none';
+    });
+  })
 }
