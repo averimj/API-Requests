@@ -103,7 +103,7 @@ function generateModalContainer(data) {
         <hr>
         <p class='modal-text'>${employee.phone}</p>
         <p class='modal-text'>${employee.location.street.number} ${employee.location.street.name}., ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
-        <p class='modal-text'>Birthday:${formatBirthday(employee)}</p>
+        <p class='modal-text'>Birthday: ${formatBirthday(employee)}</p>
       </div>
     </div>
   `).join('');
